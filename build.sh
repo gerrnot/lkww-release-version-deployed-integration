@@ -45,7 +45,7 @@ build_zip(){
       sed -i '' 's/@registry.org@/'"$REGISTRY_ORG"'/g' tmp/type-definitions.yaml
     fi
 
-  elif [ "$(expr substr $(uname -s) 1 5)" = "Linux" ]; then
+  elif [ "$(expr substr "$(uname -s)" 1 5)" = "Linux" ]; then
     echo "Detected GNU/Linux platform"
 
     sed -i.bak 's/@project.name@/'"$PLUGIN"'/g' tmp/plugin-version.properties
