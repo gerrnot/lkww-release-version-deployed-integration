@@ -11,7 +11,7 @@ func GetLatestRelease(portalBaseUrl string, helmReleaseName string, failIfNotFou
 		return nil, errors.New("the 'portalBaseUrl' parameter cannot be empty")
 	}
 	if len(helmReleaseName) == 0 {
-		return nil, errors.New("the 'portalBaseUrl' parameter cannot be empty")
+		return nil, errors.New("the 'helmReleaseName' parameter cannot be empty")
 	}
 
 	// query portal
