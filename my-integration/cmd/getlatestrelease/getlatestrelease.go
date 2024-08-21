@@ -5,11 +5,15 @@ import (
 	"errors"
 	"github.com/digital-ai/release-integration-sdk-go/task"
 	"github.com/digital-ai/release-integration-template-go/my-integration/api"
-	"google.golang.org/appengine/log"
+	"log/slog"
 	"net/http"
 )
 
 func GetLatestRelease(portalBaseUrl string, releaseName string, failIfNotFound bool) (*task.Result, error) {
+	// init
+	ctx := context.Background()
+	l := slog.Default()
+
 	// validate inputs
 	if len(portalBaseUrl) == 0 {
 		return nil, errors.New("the 'portalBaseUrl' parameter cannot be empty")
@@ -18,21 +22,19 @@ func GetLatestRelease(portalBaseUrl string, releaseName string, failIfNotFound b
 		return nil, errors.New("the 'releaseName' parameter cannot be empty")
 	}
 
-	// init
-	ctx := context.Background()
-
 	// query portal
 	portalHttpClient, err := api.NewClientWithResponses(portalBaseUrl)
 	if err != nil {
-		log.Errorf(ctx, "Failed to create http client: %v", err)
+		l.Error("Failed to create http client", "err", err)
 		return nil, err
 	}
+	l.Info("querying portal")
 	res, err := portalHttpClient.GetReleasesByNameWithResponse(ctx, releaseName, func(ctx context.Context, req *http.Request) error {
 		req.Header.Add("Accept", "application/json")
 		return nil
 	})
 	if err != nil {
-		log.Errorf(ctx, "Failed to get releases: %v", err)
+		l.Error("Failed to get releases", "err", err)
 		return nil, err
 	}
 	var release *api.Release
@@ -42,7 +44,7 @@ func GetLatestRelease(portalBaseUrl string, releaseName string, failIfNotFound b
 				release = &currRelease
 			} else {
 				err := errors.New("more than one releases found")
-				log.Errorf(ctx, "%v", err)
+				l.Error(err.Error())
 				return nil, err
 			}
 		}
