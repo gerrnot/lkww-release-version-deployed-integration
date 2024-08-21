@@ -164,7 +164,7 @@ PLUGIN=acme-release-example-integration
 
 ### Add abort logic for a task
 
-View examples at [Abort Example](my-integration/cmd/example)
+View examples at [Abort Example](my-integration/cmd/getlatestrelease)
 
 1. Define abort command for a task in `cmd/factory.go`. Use following syntax `command.AbortCommand(NAME_OF_EXISTING_COMAND): func...` (See example for `hello`)
 2. In `cmd/commands.go`, define a struct that will hold the necessary data for abort execution.

@@ -10,12 +10,7 @@ import (
 )
 
 const (
-	hello            = "goContainerExamples.Hello"
-	setSystemMessage = "goContainerExamples.SetSystemMessage"
-	serverQuery      = "goContainerExamples.ServerQuery"
-	testConnection   = "goContainerExamples.TestConnection"
-	helloWithLookup  = "goContainerExamples.HelloWithLookup"
-	nameLookup       = "goContainerExamples.NameLookup"
+	getLatestRelease = "myPlugin.GetLatestRelease"
 )
 
 type CommandFactory struct {
@@ -37,27 +32,7 @@ func (factory *CommandFactory) InitCommand(commandType command.CommandType) (com
 }
 
 var commandHatchery = map[command.CommandType]func(*CommandFactory) command.CommandExecutor{
-	hello: func(factory *CommandFactory) command.CommandExecutor {
-		return &Hello{}
+	getLatestRelease: func(factory *CommandFactory) command.CommandExecutor {
+		return &GetLatestRelease{}
 	},
-	setSystemMessage: func(factory *CommandFactory) command.CommandExecutor {
-		return &SetSystemMessage{
-			releaseClient: factory.releaseClient,
-		}
-	},
-	serverQuery: func(factory *CommandFactory) command.CommandExecutor {
-		return &ServerQuery{
-			httpClient: factory.httpClient,
-		}
-	},
-	command.AbortCommand(hello): func(factory *CommandFactory) command.CommandExecutor {
-		return &AbortHello{}
-	},
-	testConnection: func(factory *CommandFactory) command.CommandExecutor {
-		return &TestConnectionCommand{httpClient: factory.httpClient}
-	},
-	helloWithLookup: func(factory *CommandFactory) command.CommandExecutor {
-		return &HelloWithLookup{}
-	},
-	nameLookup: func(factory *CommandFactory) command.CommandExecutor { return &LookupNames{} },
 }
