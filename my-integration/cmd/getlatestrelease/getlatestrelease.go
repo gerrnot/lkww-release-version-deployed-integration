@@ -9,13 +9,13 @@ import (
 	"net/http"
 )
 
-func GetLatestRelease(portalBaseUrl string, helmReleaseName string, failIfNotFound bool) (*task.Result, error) {
+func GetLatestRelease(portalBaseUrl string, releaseName string, failIfNotFound bool) (*task.Result, error) {
 	// validate inputs
 	if len(portalBaseUrl) == 0 {
 		return nil, errors.New("the 'portalBaseUrl' parameter cannot be empty")
 	}
-	if len(helmReleaseName) == 0 {
-		return nil, errors.New("the 'helmReleaseName' parameter cannot be empty")
+	if len(releaseName) == 0 {
+		return nil, errors.New("the 'releaseName' parameter cannot be empty")
 	}
 
 	// init
@@ -27,7 +27,7 @@ func GetLatestRelease(portalBaseUrl string, helmReleaseName string, failIfNotFou
 		log.Errorf(ctx, "Failed to create http client: %v", err)
 		return nil, err
 	}
-	res, err := portalHttpClient.GetReleasesByNameWithResponse(ctx, helmReleaseName, func(ctx context.Context, req *http.Request) error {
+	res, err := portalHttpClient.GetReleasesByNameWithResponse(ctx, releaseName, func(ctx context.Context, req *http.Request) error {
 		req.Header.Add("Accept", "application/json")
 		return nil
 	})

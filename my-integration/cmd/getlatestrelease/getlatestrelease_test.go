@@ -10,9 +10,9 @@ const validSemVerRegex = `^\d+\.\d+\.\d+$`
 
 func TestGetLatestRelease(t *testing.T) {
 	type args struct {
-		portalBaseUrl   string
-		helmReleaseName string
-		failIfNotFound  bool
+		portalBaseUrl  string
+		releaseName    string
+		failIfNotFound bool
 	}
 	tests := []struct {
 		name    string
@@ -21,19 +21,19 @@ func TestGetLatestRelease(t *testing.T) {
 		wantErr bool
 	}{
 		{name: "happy path", args: struct {
-			portalBaseUrl   string
-			helmReleaseName string
-			failIfNotFound  bool
+			portalBaseUrl  string
+			releaseName    string
+			failIfNotFound bool
 		}{
-			portalBaseUrl:   "https://portal.test.lkw-walter.com/api",
-			helmReleaseName: "aggtier-aufenthalte",
-			failIfNotFound:  true,
+			portalBaseUrl:  "https://portal.test.lkw-walter.com/api",
+			releaseName:    "aggtier-aufenthalte",
+			failIfNotFound: true,
 		},
 			want: validSemVerRegex, wantErr: false},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := GetLatestRelease(tt.args.portalBaseUrl, tt.args.helmReleaseName, tt.args.failIfNotFound)
+			got, err := GetLatestRelease(tt.args.portalBaseUrl, tt.args.releaseName, tt.args.failIfNotFound)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetLatestRelease() error = %v, wantErr %v", err, tt.wantErr)
 				return

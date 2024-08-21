@@ -25,14 +25,14 @@ types:
   myPlugin.GetLatestRelease:
     extends: myPlugin.BaseTask
     label: "Kubernetes: Get latest release"
-    description: Gets the latest helm release version (normally equal to chart version) from kubernetes
+    description: Gets the latest release version (normally equal to helm chart and helm release version) from kubernetes
     input-properties:
       portalBaseUrl:
         description: >-
           Portal Rest API Base URL, Example: https://portal.test.lkw-walter.com/api
         kind: string
-      helmReleaseName:
-        description: Helm release name (normally equal to chart name)
+      releaseName:
+        description: release name (normally equal to helm chart name and helm release name)
         kind: string
       failIfNotFound:
         description: >-

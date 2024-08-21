@@ -7,5 +7,5 @@ import (
 )
 
 func (command *GetLatestRelease) FetchResult(ctx context.Context) (*task.Result, error) {
-	return getlatestrelease.GetLatestRelease(command.PortalBaseUrl, command.HelmReleaseName, command.FailIfNotFound)
+	return getlatestrelease.GetLatestRelease(command.PortalBaseUrl, command.ReleaseName, command.FailIfNotFound)
 }
