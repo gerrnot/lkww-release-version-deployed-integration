@@ -1,3 +1,4 @@
+//go:generate go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen --config=my-integration/api/oapi-codegen.yaml https://portal.test.lkw-walter.com/swagger-ui/portal-api.yaml
 package main
 
 import (

@@ -29,7 +29,7 @@ types:
     input-properties:
       portalBaseUrl:
         description: >-
-          Portal Base URL (without /api), Example: https://portal.test.lkw-walter.com
+          Portal Rest API Base URL, Example: https://portal.test.lkw-walter.com/api
         kind: string
       helmReleaseName:
         description: Helm release name (normally equal to chart name)

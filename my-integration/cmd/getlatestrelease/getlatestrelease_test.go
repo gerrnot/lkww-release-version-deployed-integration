@@ -25,7 +25,7 @@ func TestGetLatestRelease(t *testing.T) {
 			helmReleaseName string
 			failIfNotFound  bool
 		}{
-			portalBaseUrl:   "https://portal.test.lkw-walter.com",
+			portalBaseUrl:   "https://portal.test.lkw-walter.com/api",
 			helmReleaseName: "aggtier-aufenthalte",
 			failIfNotFound:  true,
 		},
