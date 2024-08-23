@@ -1,0 +1,173 @@
+openapi: "3.0.3"
+info:
+  title: Portal API
+  description: The portal to the Kubernetes clusters.
+  version: "1.0.0"
+servers:
+  - url: /api
+paths:
+  /releases/{name}:
+    get:
+      tags:
+        - releases
+      summary: Find releases by name
+      description: Returns all releases from the environment with the given name
+      operationId: getReleasesByName
+      parameters:
+        - in: path
+          name: name
+          description: Name of the releases to get
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns all releases from the environment with the given name
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Releases"
+components:
+  schemas:
+    Environment:
+      type: object
+      required:
+        - name
+        - stage
+      properties:
+        name:
+          type: string
+          description: The name of the environment
+        stage:
+          type: string
+          description: The stage of the environment
+        zone:
+          type: string
+          description: The zone of the environment
+        cluster:
+          type: string
+          description: The name of the Kubernetes cluster
+    Workload:
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - replicasDesired
+        - replicasReady
+      properties:
+        id:
+          type: string
+          description: The workload ID
+        name:
+          type: string
+          description: The workload name
+        type:
+          $ref: "#/components/schemas/WorkloadType"
+        technology:
+          type: string
+          description: The technology used for this workload, taken from the label `app.kubernetes.io/component`
+        ingresses:
+          type: array
+          description: The list of ingresses associated with this workload
+          items:
+            type: string
+        replicasDesired:
+          type: number
+          description: The number of replicas desired to be available to users
+        replicasReady:
+          type: number
+          description: The number of replicas available to users
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          description: The labels of this workload
+        annotations:
+          type: object
+          additionalProperties:
+            type: string
+          description: The annotations of this workload
+        status:
+          type: string
+          description: The status of this workload
+        version:
+          type: string
+          description: The version of this workload
+        releaseName:
+          type: string
+          description: The name of the release this workload is part of
+        releaseVersion:
+          type: string
+          description: The version of the release this workload is part of
+        domain:
+          type: string
+          description: The DDD domain this workload is associated to
+        subdomain:
+          type: string
+          description: The DDD subdomain this workload is associated to
+        boundedContext:
+          type: string
+          description: The DDD bounded context this workload is associated to
+        namespace:
+          type: string
+          description: The namespace this workload is running in
+        creationTime:
+          type: string
+          format: date-time
+          description: The creation date and time of the workload
+          example: "2023-01-30T23:31:00Z"
+    Releases:
+      type: array
+      items:
+        $ref: "#/components/schemas/Release"
+    Release:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: The release identifier
+        name:
+          type: string
+          description: The release name
+        version:
+          type: string
+          description: The version of this release
+        namespace:
+          type: string
+          description: The namespace where this release is deployed
+        initialDeploymentTime:
+          type: string
+          format: date-time
+          description: The date and time when this release was initialy deployed
+          example: "2023-01-30T23:31:00Z"
+        latestDeploymentTime:
+          type: string
+          format: date-time
+          description: The date and time when this release was last updated
+          example: "2023-01-30T23:31:00Z"
+        status:
+          type: string
+          description: The status of this release
+        domain:
+          type: string
+          description: The domain of this release
+        subdomain:
+          type: string
+          description: The subdomain of this release
+        boundedContext:
+          type: string
+          description: The bounded context of this release
+        workloads:
+          $ref: "#/components/schemas/Workloads"
+    Workloads:
+      type: array
+      items:
+        $ref: "#/components/schemas/Workload"
+    WorkloadType:
+      type: string
+      description: The workload type
+      enum: [Deployment, StatefulSet]

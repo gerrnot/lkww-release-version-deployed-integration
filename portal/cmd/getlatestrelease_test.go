@@ -1,6 +1,7 @@
-package getlatestrelease
+package cmd
 
 import (
+	"github.com/digital-ai/release-integration-template-go/task/server"
 	"github.com/stretchr/testify/assert"
 	"regexp"
 	"testing"
@@ -10,7 +11,7 @@ const validSemVerRegex = `^\d+\.\d+\.\d+$`
 
 func TestGetLatestRelease(t *testing.T) {
 	type args struct {
-		portalBaseUrl  string
+		server         server.Server
 		releaseName    string
 		failIfNotFound bool
 	}
@@ -21,11 +22,16 @@ func TestGetLatestRelease(t *testing.T) {
 		wantErr bool
 	}{
 		{name: "happy path", args: struct {
-			portalBaseUrl  string
+			server         server.Server
 			releaseName    string
 			failIfNotFound bool
 		}{
-			portalBaseUrl:  "https://portal.test.lkw-walter.com/api",
+			server: server.Server{
+				Url:         "https://portal.test.lkw-walter.com/api",
+				Certificate: "",
+				Username:    "",
+				Password:    "",
+			},
 			releaseName:    "aggtier-aufenthalte",
 			failIfNotFound: true,
 		},
@@ -33,7 +39,7 @@ func TestGetLatestRelease(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := GetLatestRelease(tt.args.portalBaseUrl, tt.args.releaseName, tt.args.failIfNotFound)
+			got, err := GetLatestRelease(tt.args.server, tt.args.releaseName, tt.args.failIfNotFound)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("GetLatestRelease() error = %v, wantErr %v", err, tt.wantErr)
 				return

@@ -8,6 +8,8 @@ services:
       - ADMIN_PASSWORD=admin
       - ACCEPT_EULA=Y
       - SERVER_URL=http://host.docker.internal:5516
+    restart: on-failure
+    platform: linux/arm64/v8
 
   digitalai-release-setup:
     build: digitalai-release-setup
@@ -27,6 +29,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp:/tmp
+    platform: linux/arm64/v8
 
   container-registry:
     image: registry:2

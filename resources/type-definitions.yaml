@@ -8,29 +8,40 @@
 # type-definitions.yaml and type-definitions.xml at the same time.
 
 types:
+  portal.Server:
+    extends: configuration.BasicAuthHttpConnection
+    properties:
+      # Overrides 'url' property to give it a new description
+      url:
+        description: Lkww Portal Server Rest API Base URL
+        required: true
+      certificate:
+        description: CA-Cert of Rest API to Trust
+        required: false
 
   # All tasks in this project extend the BaseTask.
   # Defines the container image location and color/icon for all tasks
-  myPlugin.BaseTask:
+  portal.BaseTask:
     extends: xlrelease.ContainerTask
     virtual: true
-
     hidden-properties:
       image:
         default: "@registry.url@/@registry.org@/@project.name@:@project.version@"
         transient: true
-      iconLocation: test.png
+      iconLocation: portal.png
       taskColor: "#667385"
 
-  myPlugin.GetLatestRelease:
-    extends: myPlugin.BaseTask
+  portal.GetLatestRelease:
+    extends: portal.BaseTask
     label: "Kubernetes: Get latest release"
     description: Gets the latest release version (normally equal to helm chart and helm release version) from kubernetes
     input-properties:
-      portalBaseUrl:
+      server:
         description: >-
-          Portal Rest API Base URL, Example: https://portal.test.lkw-walter.com/api
-        kind: string
+          Portal Rest API Server
+        kind: ci
+        referenced-type: portal.Server
+        required: true
       releaseName:
         description: release name (normally equal to helm chart name and helm release name)
         kind: string
@@ -40,7 +51,6 @@ types:
           In case of technical errors, the module fails anyway!
         kind: boolean
         default: true
-
     output-properties:
       version:
         kind: string

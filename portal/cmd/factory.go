@@ -3,23 +3,21 @@ package cmd
 import (
 	"fmt"
 	"github.com/digital-ai/release-integration-sdk-go/api/release/openapi"
-	"github.com/digital-ai/release-integration-sdk-go/http"
 	"github.com/digital-ai/release-integration-sdk-go/task"
 	"github.com/digital-ai/release-integration-sdk-go/task/command"
 	"k8s.io/klog/v2"
 )
 
 const (
-	getLatestRelease = "myPlugin.GetLatestRelease"
+	getLatestRelease = "portal.GetLatestRelease"
 )
 
 type CommandFactory struct {
-	httpClient    *http.HttpClient
 	releaseClient *openapi.APIClient
 }
 
-func NewCommandFactory(httpClient *http.HttpClient, releaseClient *openapi.APIClient) *CommandFactory {
-	return &CommandFactory{httpClient: httpClient, releaseClient: releaseClient}
+func NewCommandFactory(releaseClient *openapi.APIClient) *CommandFactory {
+	return &CommandFactory{releaseClient: releaseClient}
 }
 func (factory *CommandFactory) InitCommand(commandType command.CommandType) (command.CommandExecutor, error) {
 	if spawnCommand, present := commandHatchery[commandType]; present {
@@ -33,6 +31,6 @@ func (factory *CommandFactory) InitCommand(commandType command.CommandType) (com
 
 var commandHatchery = map[command.CommandType]func(*CommandFactory) command.CommandExecutor{
 	getLatestRelease: func(factory *CommandFactory) command.CommandExecutor {
-		return &GetLatestRelease{}
+		return &GetLatestReleaseC{}
 	},
 }

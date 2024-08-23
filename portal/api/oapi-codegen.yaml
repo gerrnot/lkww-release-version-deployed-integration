@@ -3,4 +3,4 @@ package: api
 generate:
   client: true
   models: true
-output: my-integration/api/gen.go
+output: portal/api/gen.go
